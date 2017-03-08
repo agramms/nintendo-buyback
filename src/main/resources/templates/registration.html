@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"/>
     <!-- Theme style -->
     <link rel="stylesheet" th:href="@{/dist/css/AdminLTE.min.css}"/>
-    <!-- iCheck -->
-    <link rel="stylesheet" th:href="@{/plugins/iCheck/square/blue.css}"/>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,13 +32,13 @@
         <p class="login-box-msg">Cadastrar um novo usuário</p>
 
 
-        <form autocomplete="off" action="#" th:action="@{/registration}"
+        <form autocomplete="off" th:action="@{/registration}"
               th:object="${user}" method="post" class="form-horizontal"
               role="form">
             <div class="form-group has-feedback">
-                <label th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"
+                <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
                        class="validation-message"></label>
-                <input type="text" class="form-control" placeholder="Nome Completo" th:field="*{fullName}"/>
+                <input type="text" class="form-control" placeholder="Nome Completo" th:field="*{name}"/>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
@@ -55,6 +53,14 @@
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
                         class="validation-message"></label>
+            </div>
+            <div class="form-group has-feedback">
+                <label>Empresa:</label>
+                <select class="form-contol" th:field="*{company}" id="dropCompany">
+                    <option th:each="company : ${companies}" th:value="${company.id}" th:text="${company.name}"></option>
+                </select>
+                <label th:if="${#fields.hasErrors('company')}" th:errors="*{company}"
+                       class="validation-message"></label>
             </div>
             <div class="row">
                 <div class="col-xs-8">
@@ -75,21 +81,5 @@
     <!-- /.form-box -->
 </div>
 <!-- /.register-box -->
-
-<!-- jQuery 2.2.3 -->
-<script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="../../plugins/iCheck/icheck.min.js"></script>
-<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
-</script>
 </body>
 </html>

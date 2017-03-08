@@ -1,5 +1,8 @@
-package com.nintendo.buyback.config;
+package com.nintendo.buyback.configuration;
 
+import javax.sql.DataSource;
+
+import com.nintendo.buyback.model.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,16 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.sql.DataSource;
-
-/**
- * Created by: Alessandro VIeira Grammelsbacher
- * Created date: 03/03/2017 00:41
- * Project Name: nintendo-buyback
- */
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -53,17 +49,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
-                .antMatchers("/resources/**").permitAll()
-                .antMatchers("/bootstrap/**", "/dist/**", "/plugins/**").permitAll()
-                .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/bootstrap/**", "/dist/**", "plugins").permitAll()
+                .antMatchers("/admin/**").hasAuthority(Roles.ADMIN.toString())
+                .antMatchers("/user/**").hasAnyAuthority(Roles.USER.toString(), Roles.ADMIN.toString()).anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/admin/home")
+                .defaultSuccessUrl("/user/home")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling()
+                .logoutSuccessUrl("/login?logout=true").and().exceptionHandling()
                 .accessDeniedPage("/access-denied");
     }
 
