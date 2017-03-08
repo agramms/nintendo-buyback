@@ -25,8 +25,9 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-        modelAndView.addObject("userName", "Olá, " + user.getName() + " (" + user.getEmail() + ")");
-        modelAndView.addObject("adminMessage","Essa página será exibida apenas para adminsitradores");
+        modelAndView.addObject("userName", user.getName() );
+        modelAndView.addObject("userMail", "("+user.getEmail()+")" );
+        modelAndView.addObject("userCompany", (user.getCompany() != null ? user.getCompany().getName() : ""));
         modelAndView.setViewName("user/home");
         return modelAndView;
     }
