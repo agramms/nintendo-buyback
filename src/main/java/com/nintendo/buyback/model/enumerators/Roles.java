@@ -1,4 +1,4 @@
-package com.nintendo.buyback.model;
+package com.nintendo.buyback.model.enumerators;
 
 /**
  * Created by avieira on 07/03/2017.

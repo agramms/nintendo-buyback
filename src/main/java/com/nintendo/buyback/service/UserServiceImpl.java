@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import com.nintendo.buyback.model.*;
+import com.nintendo.buyback.model.enumerators.Roles;
+import com.nintendo.buyback.model.enumerators.Status;
 import com.nintendo.buyback.repository.CompanyRepository;
 import com.nintendo.buyback.repository.RoleRepository;
 import com.nintendo.buyback.repository.UserRepository;

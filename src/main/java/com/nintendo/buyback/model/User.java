@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.nintendo.buyback.model.enumerators.Status;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -158,4 +159,6 @@ public class User {
     public void setCompany(Company company) {
         this.company = company;
     }
+
+
 }

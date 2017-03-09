@@ -2,7 +2,7 @@ package com.nintendo.buyback.configuration;
 
 import javax.sql.DataSource;
 
-import com.nintendo.buyback.model.Roles;
+import com.nintendo.buyback.model.enumerators.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/bootstrap/**", "/dist/**", "plugins").permitAll()
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/bootstrap/**", "/dist/**", "/plugins/**").permitAll()
                 .antMatchers("/admin/**").hasAuthority(Roles.ADMIN.toString())
                 .antMatchers("/user/**").hasAnyAuthority(Roles.USER.toString(), Roles.ADMIN.toString()).anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
@@ -67,7 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/bootstrap/**", "/dist/**", "/plugins/**" );
     }
 
 

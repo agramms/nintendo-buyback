@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by avieira on 06/03/2017.
- */
 @Service("companyService")
 public class CompanyServiceImpl implements CompanyService {
 
@@ -20,5 +17,4 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Company> findAllCompanies() {
         return companyRepository.findAll();
     }
-
 }

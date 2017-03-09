@@ -1,5 +1,6 @@
 package com.nintendo.buyback.model;
 
+import com.nintendo.buyback.model.enumerators.Status;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -22,14 +23,25 @@ public class Company {
     private String name;
 
     @Column(name = "active")
+    @NotEmpty(message="*Favor informar o status da empresa")
     private Status active;
 
     @Column(name = "qtdLicenses")
     @NotEmpty(message="*Favor informar a quantidade de usuários que poderão ser cadastrados")
     private int qtdLicenses;
 
+    @Column(name = "budget")
+    private double budget;
+
     @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
     private Set<User> users;
+
+    @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
+    private Set<Bid> bids;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "company_auction", joinColumns = @JoinColumn(name = "company_id"), inverseJoinColumns = @JoinColumn(name = "auction_id"))
+    private Set<Auction> auctions;
 
     /**
      * Id interno da empresa, número único na base de dados e criado automaticamente
@@ -109,5 +121,53 @@ public class Company {
      */
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    /**
+     * Obtem o orçamento da empresa
+     * @return Entidade Lance
+     */
+    public double getBudget() {
+        return budget;
+    }
+
+    /**
+     * Altera orçamento da empresa
+     * @param budget
+     */
+    public void setBudget(double budget) {
+        this.budget = budget;
+    }
+
+    /**
+     * Obem a lista de lances efetuados pela empresa
+     * @return
+     */
+    public Set<Bid> getBids() {
+        return bids;
+    }
+
+    /**
+     * Altera o valor da lista de lances
+     * @param bids
+     */
+    public void setBids(Set<Bid> bids) {
+        this.bids = bids;
+    }
+
+    /**
+     * Leilões que a empresa participou ou está participando
+     * @return retorna lista de Leilões
+     */
+    public Set<Auction> getAuctions() {
+        return auctions;
+    }
+
+    /**
+     * Altera a lista de leilões que a empresa está participando
+     * @param auctions
+     */
+    public void setAuctions(Set<Auction> auctions) {
+        this.auctions = auctions;
     }
 }

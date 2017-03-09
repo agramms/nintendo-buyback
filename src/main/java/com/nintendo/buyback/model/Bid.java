@@ -1,0 +1,91 @@
+package com.nintendo.buyback.model;
+
+import com.nintendo.buyback.model.enumerators.Status;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
+import java.util.Set;
+
+/**
+ * Created by avieira on 09/03/2017.
+ */
+@Entity
+@Table(name = "bid")
+public class Bid {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "bid_id")
+    private long id;
+
+    @Column(name = "active")
+    @NotEmpty(message = "*Informar um status para o produto")
+    private Status active;
+
+    @Column(name = "value")
+    @NotEmpty(message = "*Todo lance deve ter um valor")
+    private double value;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="company_id")
+    private Company company;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="auction_id")
+    private Auction auction;
+
+    @OneToMany(mappedBy = "bid",fetch = FetchType.LAZY)
+    private Set<AuctionItem> auctionItens;
+
+    /**
+     * Getters e Setters
+     */
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Status getActive() {
+        return active;
+    }
+
+    public void setActive(Status active) {
+        this.active = active;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Auction getAuction() {
+        return auction;
+    }
+
+    public void setAuction(Auction auction) {
+        this.auction = auction;
+    }
+
+    public Set<AuctionItem> getAuctionItens() {
+        return auctionItens;
+    }
+
+    public void setAuctionItens(Set<AuctionItem> auctionItens) {
+        this.auctionItens = auctionItens;
+    }
+}
