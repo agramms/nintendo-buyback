@@ -65,7 +65,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover">
+                            <table class="table table-hover" th:field="*{auctions}">
                                 <tbody><tr>
                                     <th>ID</th>
                                     <th>Nome</th>
@@ -74,13 +74,13 @@
                                     <th>Status</th>
                                     <th>Categorias</th>
                                 </tr>
-                                <tr>
-                                    <td>183</td>
-                                    <td>John Doe</td>
-                                    <td>11-7-2014</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="label label-success">Approved</span></td>
-                                    <td>Alessandro</td>
+                                <tr th:each="auction : ${auctions}" >
+                                    <td th:utext="${auction.id}" ></td>
+                                    <td th:utext="${auction.name}"></td>
+                                    <td th:utext="${#dates.format(auction.start, 'dd/MMM/yyyy HH:mm')}"></td>
+                                    <td th:utext="${#dates.format(auction.finish, 'dd/MMM/yyyy HH:mm')}"></td>
+                                    <td><span class="label label-success" th:utext="${auction.active}"></span></td>
+                                    <td th:utext="${auction.name}"></td>
                                 </tr>
 
                                 </tbody></table>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Nintendo | BuyBack - Home</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"/>
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"/>
+    <!-- Include Date Range Picker -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/dist/css/AdminLTE.min.css}"/>
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" th:href="@{/dist/css/skins/skin-red.min.css}"/>
+    <!-- iCheck -->
+    <link rel="stylesheet" th:href="@{/plugins/iCheck/flat/red.css}"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition skin-red sidebar-mini">
+<div class="wrapper">
+
+    <div th:replace="fragments/menu :: main-header"></div>
+    <div th:replace="fragments/menu :: main-sidebar-admin"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Leilão
+                <small th:utext="${qtdAuction} "/>
+            </h1>
+            <ol class="breadcrumb">
+                <li><i class="fa fa-legal"></i> Leilão</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Quick Example</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : has-success">
+                            <label for="auctionName" >Leilão</label>
+                            <input type="text" class="form-control" id="auctionName" placeholder="Nome" th:field="*{name}">
+                            <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                   class="help-block"></label>
+                        </div>
+                        <div class="form-group" th:classappend="${#fields.hasErrors('start')} ? has-error : has-success">
+                            <label>Período:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right" id="daterange" name="daterange" th:field="*{dateRange}">
+                            </div>
+                            <label th:if="${#fields.hasErrors('start')}" th:errors="*{start}"
+                                   class="help-block"></label>
+                            <label th:if="${#fields.hasErrors('finish')}" th:errors="*{finish}"
+                                   class="help-block"></label>
+                        </div>
+                        <div class="form-group" th:classappend="${#fields.hasErrors('qtdMaxProducts')} ? has-error : has-success">
+                            <label for="maxProducts" >Quantidade máxima de produtos</label>
+                            <input type="number" min="1" max="100" value="100" class="form-control" id="maxProducts" placeholder="Quantidade máxima de produtos" th:field="*{qtdMaxProducts}">
+                            <label th:if="${#fields.hasErrors('qtdMaxProducts')}" th:errors="*{qtdMaxProducts}"
+                                   class="help-block"></label>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+</div>
+<!-- ./wrapper -->
+<!-- jQuery 2.2.3 -->
+<script th:src="@{/plugins/jQuery/jquery-2.2.0.min.js}"></script>
+<!-- Bootstrap 3.3.6 -->
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<!-- Slimscroll -->
+<script th:src="@{/plugins/slimScroll/jquery.slimscroll.min.js}"></script>
+<!-- FastClick -->
+<script th:src="@{/plugins/fastclick/fastclick.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/app.min.js}"></script>
+<script type="text/javascript">
+$(function() {
+    $('input[name="daterange"]').daterangepicker({
+        timePicker: true,
+        timePickerIncrement: 30,
+        locale: {
+            format: 'MM/DD/YYYY h:mm A'
+        }
+    });
+});
+</script>
+</body>
+</html>

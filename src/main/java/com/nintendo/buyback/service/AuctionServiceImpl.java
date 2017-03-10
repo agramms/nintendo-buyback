@@ -8,6 +8,7 @@ import com.nintendo.buyback.repository.AuctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service("auctionService")
@@ -23,6 +24,16 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     public List<Auction> findActiveAuctions() {
         return auctionRepository.findByActive(Status.ACTIVE);
+    }
+
+    @Override
+    public Auction findByStartDate(LocalDateTime start) {
+        return auctionRepository.findByStart(start);
+    }
+
+    @Override
+    public void saveAuction(Auction auction) {
+        auctionRepository.save(auction);
     }
 
 
