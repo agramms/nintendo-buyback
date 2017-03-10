@@ -56,7 +56,8 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                <form role="form">
+                <form role="form" autocomplete="off" th:action="@{/admin/auction/registration}"
+                      th:object="${auction}" method="post" class="form-horizontal">
                     <div class="box-body">
                         <div class="form-group" th:classappend="${#fields.hasErrors('name')} ? has-error : has-success">
                             <label for="auctionName" >Leilão</label>
@@ -70,7 +71,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-clock-o"></i>
                                 </div>
-                                <input type="text" class="form-control pull-right" id="daterange" name="daterange" th:field="*{dateRange}">
+                                <input type="text" class="form-control pull-right" id="daterange" name="daterange" >
                             </div>
                             <label th:if="${#fields.hasErrors('start')}" th:errors="*{start}"
                                    class="help-block"></label>

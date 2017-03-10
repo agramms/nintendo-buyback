@@ -31,6 +31,7 @@ public class AuctionContoller {
 
         Auction auction = new Auction();
         modelAndView.addObject("auction", auction);
+        modelAndView.addObject("dateRange", "");
 
         modelAndView.setViewName("admin/auction/registration");
         return modelAndView;
