@@ -33,7 +33,15 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Override
     public void saveAuction(Auction auction) {
+        if(auction.getActive() == null || auction.getActive().toString().equals(""))
+            auction.setActive(Status.ACTIVE);
+
         auctionRepository.save(auction);
+    }
+
+    @Override
+    public List<Auction> findAuctionsByName(String name) {
+        return auctionRepository.findByName(name);
     }
 
 

@@ -56,7 +56,7 @@ Select * from (Select '10' category_id, 'Outros Gêneros' name) as tmp
 WHERE NOT EXISTS (SELECT category_id from category where category_id = '10' ) LIMIT 1;
 
 /*Product List*/
-
+/*
 INSERT INTO product values (1, 1, 'Eine Harzreise', 2, 2015, 9);
 INSERT INTO product values (2, 1, 'The Jungle Book Game', 5, 2016, 4);
 INSERT INTO product values (3, 1, 'The Shared Dream', 1, 2016, 6);
@@ -5057,3 +5057,4 @@ INSERT INTO product values (4997, 1, 'Around the World in 80 Days', 7, 2016, 8);
 INSERT INTO product values (4998, 1, 'Around the World in 80 Days with Michael Palin', 1, 2017, 10);
 INSERT INTO product values (4999, 1, 'Arpaa Turup', 10, 2017, 8);
 INSERT INTO product values (5000, 1, 'Arquebus: Men of Iron Volume IV', 9, 2015, 7);
+*/

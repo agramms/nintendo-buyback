@@ -31,7 +31,7 @@
 <div class="wrapper">
 
     <div th:replace="fragments/menu :: main-header"></div>
-    <div th:replace="fragments/menu :: main-sidebar-admin"></div>
+    <div th:replace="fragments/menu :: ${isAdmin} ? main-sidebar-admin : main-sidebar-user"></div>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -51,16 +51,15 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">Responsive Hover Table</h3>
+                            <h3 class="box-title">Lista</h3>
 
                             <div class="box-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                                    <div class="input-group-btn">
-                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                    </div>
-                                </div>
+                                    <form class="input-group input-group-sm" style="width: 150px;" action="#" autocomplete="off" th:action="@{/user/home}" method="get">
+                                        <input type="text" name="auctionName" id="auctionName" class="form-control pull-right" placeholder="Busca" />
+                                        <div class="input-group-btn">
+                                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </form>
                             </div>
                         </div>
                         <!-- /.box-header -->
@@ -77,9 +76,11 @@
                                 <tr th:each="auction : ${auctions}" >
                                     <td th:utext="${auction.id}" ></td>
                                     <td th:utext="${auction.name}"></td>
-                                    <td th:utext="${#dates.format(auction.start, 'dd/MMM/yyyy HH:mm')}"></td>
-                                    <td th:utext="${#dates.format(auction.finish, 'dd/MMM/yyyy HH:mm')}"></td>
-                                    <td><span class="label label-success" th:utext="${auction.active}"></span></td>
+                                    <td th:utext="${#temporals.format(auction.start, 'dd/MM/yyyy HH:mm')}"></td>
+                                    <td th:utext="${#temporals.format(auction.finish, 'dd/MM/yyyy HH:mm')}"></td>
+                                    <td th:if="${auction.active == T(com.nintendo.buyback.model.enumerators.Status).ACTIVE}"><span class="label label-success" >Ativo</span></td>
+                                    <td th:if="${auction.active == T(com.nintendo.buyback.model.enumerators.Status).BLOCKED}"><span class="label label-warning" >Bloqueado</span></td>
+                                    <td th:if="${auction.active == T(com.nintendo.buyback.model.enumerators.Status).INACTIVE}"><span class="label label-error" >Finalizado</span></td>
                                     <td th:utext="${auction.name}"></td>
                                 </tr>
 

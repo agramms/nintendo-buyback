@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * Created by: Alessandro VIeira Grammelsbacher
@@ -30,8 +33,8 @@ public class AuctionContoller {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         Auction auction = new Auction();
+        auction.setQtdMaxProducts(100);
         modelAndView.addObject("auction", auction);
-        modelAndView.addObject("dateRange", "");
 
         modelAndView.setViewName("admin/auction/registration");
         return modelAndView;
@@ -40,6 +43,7 @@ public class AuctionContoller {
     @RequestMapping(value = "/admin/auction/registration", method = RequestMethod.POST)
     public ModelAndView createAuction(@Valid Auction auction, BindingResult bindingResult){
         ModelAndView modelAndView = new ModelAndView();
+
         Auction auctionExists = auctionService.findByStartDate(auction.getStart());
         if (auctionExists != null) {
             bindingResult
@@ -50,7 +54,7 @@ public class AuctionContoller {
             modelAndView.setViewName("auction/registration");
         } else {
             auctionService.saveAuction(auction);
-            modelAndView.addObject("successMessage", "");
+            modelAndView.addObject("successMessage", "Leilão cadastrado com sucesso");
             modelAndView.addObject("auction", new Auction());
             modelAndView.setViewName("user/home");
 

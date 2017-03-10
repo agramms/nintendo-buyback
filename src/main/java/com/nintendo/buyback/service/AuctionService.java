@@ -13,4 +13,5 @@ public interface AuctionService {
     List<Auction> findActiveAuctions();
     Auction findByStartDate(LocalDateTime start);
     void saveAuction(Auction auction);
+    List<Auction> findAuctionsByName(String name);
 }
