@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Nintendo | BuyBack - Home</title>
+    <title>Nintendo | BuyBack - Leilão</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
     <!-- Bootstrap 3.3.6 -->
@@ -29,7 +29,6 @@
 </head>
 <body class="hold-transition skin-red sidebar-mini">
 <div class="wrapper">
-
     <div th:replace="fragments/menu :: main-header"></div>
     <div th:replace="fragments/menu :: ${isAdmin} ? main-sidebar-admin : main-sidebar-user"></div>
     <!-- Content Wrapper. Contains page content -->
@@ -37,72 +36,80 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Leilão
+                Lance para Leilão
                 <small th:utext="${auctionHeader} "/>
             </h1>
             <ol class="breadcrumb">
                 <li><i class="fa fa-legal"/>Home</li>
                 <li>Leilão</li>
+                <li>Lance</li>
             </ol>
         </section>
 
         <!-- Main content -->
-        <ootstra class="content">
-            <div th:if="${returnAdd}" class="callout callout-info">
-                <h4>Pronto!</h4>
-                <span th:utext="${successMessage}"></span>
-            </div>
+        <section class="content">
 
             <div class="row">
-                <div class="col-md-10"></div>
-                <div class="col-md-2">
-                    <a th:href="@{/user/bid/__${auction.id}__}" class="btn btn-primary btn-block margin-bottom">Efetuar Lance</a>
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Horizontal Form</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form role="form" action="#" autocomplete="off" th:action="@{/user/bid/__${bid.auction.id}__}"
+                               method="post" th:object="${bid}">
+
+                            <div class="box-body">
+                                <div class="" th:classappend="${#fields.hasErrors('value')} ? has-error : form-group">
+                                    <label for="value" class="col-sm-2 control-label">Valor</label>
+                                    <div class="col-sm-8 input-group">
+                                        <span class="input-group-addon">$</span>
+                                        <input type="number" th:max="${userData.company.budget}" class="form-control" id="value" placeholder="Valor Uniário do Produto" th:field="*{value}">
+                                        <label th:if="${#fields.hasErrors('value')}" th:errors="*{value}"
+                                               class="help-block"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-default" id="simular" name="action" value="verify">Verificar Lance</button>
+                                <button type="submit" class="btn btn-info pull-right" id="confirmar" name="action" value="confirm">Confirmar</button>
+                            </div>
+                            <!-- /.box-footer -->
+                        </form>
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <section class="invoice">
-                    <!-- title row -->
-                    <!-- info row -->
-                    <div class="row invoice-info">
-                        <div class="col-sm-4 invoice-col">
-
-                            <address>
-                                <strong th:text="${auction.name}">#</strong><br/>
-                                <text th:text="${auction.companies?.size()} + ' empresas participando'"></text><br/>
-                                <text th:text="${auction.bids?.size()} + ' lances efetuados'"></text><br/>
-                                <text th:text="${auction.auctionItens?.size()} + ' produtos participantes'"></text><br/>
-                            </address>
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Itens no lance: </h3>
                         </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
-
-                    <!-- Table row -->
-                    <div class="row">
-                        <div class="col-xs-12 table-responsive">
-                            <table class="table table-striped text-center" th:field="*{auction.auctionItens}">
-                                <thead>
-                                <tr>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover" th:field="*{bid.auctionItens}">
+                                <tbody><tr>
                                     <th>Quantidade</th>
                                     <th>Produto</th>
                                     <th>Serial #</th>
                                     <th>Categoria</th>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="auctionItem : ${auction.auctionItens}">
+                                <tr th:each="auctionItem : ${bid.auctionItens}">
                                     <td th:utext="${auctionItem.quantityStored}"></td>
                                     <td th:utext="${auctionItem.product.name}"></td>
                                     <td th:utext="${auctionItem.product.id}"></td>
                                     <td th:utext="${auctionItem.product.category?.name}"></td>
                                 </tr>
-                                </tbody>
-                            </table>
+
+                                </tbody></table>
                         </div>
-                        <!-- /.col -->
+                        <!-- /.box-body -->
                     </div>
-                    <!-- /.row -->
-                </section>
+                    <!-- /.box -->
+                </div>
             </div>
         </section>
         <!-- /.content -->

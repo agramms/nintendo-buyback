@@ -110,6 +110,7 @@
                     <p th:utext="${userData.name}"></p>
                     <a href="#" th:utext="${userData.email}"><i class="fa fa-circle text-success"></i></a><br/>
                     <a href="#" th:utext="${userData.company?.name}"><i class="fa fa-circle text-success"></i></a>
+                    <a href="#" th:utext="'$'+${userData.company?.budget}"><i class="fa fa-circle text-success"></i></a>
                 </div>
             </div>
             <!-- /.search form -->

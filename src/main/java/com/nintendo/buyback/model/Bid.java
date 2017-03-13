@@ -4,6 +4,7 @@ import com.nintendo.buyback.model.enumerators.Status;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.Set;
 
 /**
@@ -22,7 +23,7 @@ public class Bid {
     private Status active;
 
     @Column(name = "value")
-    @NotEmpty(message = "*Todo lance deve ter um valor")
+    @Min(value = 0, message = "*Todo lance deve ter um valor")
     private double value;
 
     @ManyToOne(cascade = CascadeType.ALL)
