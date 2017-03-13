@@ -4,6 +4,7 @@ import com.nintendo.buyback.model.enumerators.Status;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -23,10 +24,11 @@ public class Product {
     private String name;
 
     @Column(name = "active")
-    @NotEmpty(message = "*Informar um status para o produto")
+    @Enumerated(EnumType.ORDINAL)
     private Status active;
 
     @Column(name = "quantity")
+    @Min(value = 0, message = "Quantidade não pode ser menor que 0")
     private int quantity;
 
     @Column(name = "year_published")

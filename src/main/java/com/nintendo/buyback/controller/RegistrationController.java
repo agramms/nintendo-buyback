@@ -21,6 +21,8 @@ import java.util.List;
 @RequestMapping(value="/registration")
 public class RegistrationController {
 
+    public static final String ROOT_REGISTRATION = "registration";
+
     @Autowired
     private UserService userService;
 
@@ -33,7 +35,7 @@ public class RegistrationController {
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
         modelAndView.addObject("user", user);
-        modelAndView.setViewName("registration");
+        modelAndView.setViewName(ROOT_REGISTRATION);
 
         List<Company> companies = companyService.findAllCompanies();
         modelAndView.addObject("companies", companies);
@@ -51,13 +53,27 @@ public class RegistrationController {
                     .rejectValue("email", "error.user",
                             "Já existe um usuário cadastrado para esse email");
         }
+        if(user.getCompany() != null)
+        {
+            int licences = user.getCompany().getQtdLicenses();
+            int inUse = user.getCompany().getUsers().size();
+
+            if(inUse >= licences)
+                bindingResult
+                        .rejectValue("company", "error.user",
+                                "Empresa já possui a quantidade máxima de usuários");
+
+        }
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registration");
+            List<Company> companies = companyService.findAllCompanies();
+            modelAndView.addObject("companies", companies);
+
+            modelAndView.setViewName(ROOT_REGISTRATION);
         } else {
             userService.saveUser(user);
             modelAndView.addObject("successMessage", "Usuário registrado com sucesso");
             modelAndView.addObject("user", new User());
-            modelAndView.setViewName("login");
+            modelAndView.setViewName(LoginController.LOGIN_VIEW);
 
         }
         return modelAndView;

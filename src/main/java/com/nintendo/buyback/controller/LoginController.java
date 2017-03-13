@@ -11,11 +11,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value={"/", "/login"})
 public class LoginController {
 
+    public static final String LOGIN_VIEW = "login";
+
     /*Inicializa formulário*/
-    @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/", "/"+LOGIN_VIEW}, method = RequestMethod.GET)
     public ModelAndView login(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
+        modelAndView.setViewName(LOGIN_VIEW);
         return modelAndView;
     }
 }

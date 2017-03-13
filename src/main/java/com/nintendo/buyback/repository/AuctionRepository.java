@@ -14,5 +14,6 @@ import java.util.List;
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
     List<Auction> findByActive(Status active);
     Auction findByStart(LocalDateTime start);
-    List<Auction> findByName(String name);
+    List<Auction> findByNameContaining(String name);
+    List<Auction> findByCompanies(List<Company> company);
 }

@@ -23,11 +23,10 @@ public class Company {
     private String name;
 
     @Column(name = "active")
-    @NotEmpty(message="*Favor informar o status da empresa")
+    @Enumerated(EnumType.ORDINAL)
     private Status active;
 
     @Column(name = "qtdLicenses")
-    @NotEmpty(message="*Favor informar a quantidade de usuários que poderão ser cadastrados")
     private int qtdLicenses;
 
     @Column(name = "budget")

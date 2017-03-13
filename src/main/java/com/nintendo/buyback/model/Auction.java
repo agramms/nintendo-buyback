@@ -1,10 +1,12 @@
 package com.nintendo.buyback.model;
 
 import com.nintendo.buyback.model.enumerators.Status;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 /**
@@ -38,10 +40,10 @@ public class Auction {
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "auctions")
     private Set<Company> companies;
 
-    @OneToMany(mappedBy = "auction",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "auction",fetch = FetchType.LAZY)
     private Set<Bid> bids;
 
-    @OneToMany(mappedBy = "auction",fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "auction",fetch = FetchType.EAGER)
     private Set<AuctionItem> auctionItens;
 
     /**
@@ -122,5 +124,11 @@ public class Auction {
 
     public void setAuctionItens(Set<AuctionItem> auctionItens) {
         this.auctionItens = auctionItens;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "#"+this.getId() +" - "+ this.getName() + " de: "+ this.getStart().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")) + " até " + this.getFinish().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
 }

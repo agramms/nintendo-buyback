@@ -37,11 +37,11 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Leilões Ativos
-                <small th:utext="${qtdAuction} "/>
+                Usuários
+                <small th:utext="${qtdUsers} "/>
             </h1>
             <ol class="breadcrumb">
-                <li><i class="fa fa-legal"></i> Home</li>
+                <li><i class="fa fa-users"></i> Usuários</li>
             </ol>
         </section>
 
@@ -54,45 +54,37 @@
                             <h3 class="box-title">Lista</h3>
 
                             <div class="box-tools">
-                                    <form class="input-group input-group-sm" style="width: 150px;" action="#" autocomplete="off" th:action="@{/user/home}" method="get">
-                                        <input type="text" name="auctionName" id="auctionName" class="form-control pull-right" placeholder="Busca" />
-                                        <div class="input-group-btn">
-                                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                                        </div>
-                                    </form>
+                                <form class="input-group input-group-sm" style="width: 150px;" action="#" autocomplete="off" th:action="@{/user/list}" method="get">
+                                    <input type="text" name="userFilter" id="userFilter" class="form-control pull-right" placeholder="Busca" />
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
+
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover text-center" th:field="*{auctions}">
+                            <table class="table table-hover" th:field="*{users}">
                                 <tbody><tr>
                                     <th>ID</th>
                                     <th>Nome</th>
-                                    <th>Início</th>
-                                    <th>Término</th>
+                                    <th>Email</th>
+                                    <th>Função</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Empresa</th>
                                 </tr>
-                                <tr th:each="auction : ${auctions}" th:style="${#lists.contains(auction?.companies, userData?.company) ? 'cursor: pointer;' : '' }"  th:attrappend="onclick=${#lists.contains(auction?.companies, userData?.company)} ? 'javascript:rowClicked(\'' + ${auction.id} + '\')'">
+                                <tr th:each="user : ${users}" >
+                                    <td th:utext="${user.id}" ></td>
+                                    <td th:utext="${user.name}"></td>
+                                    <td th:utext="${user.email}"></td>
+                                    <td th:utext="${#strings.listJoin(user.roles,', ')}"></td>
+                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).ACTIVE}"><span class="label label-success" >Ativo</span></td>
+                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).BLOCKED}"><span class="label label-warning" >Bloqueado</span></td>
+                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).INACTIVE}"><span class="label label-error" >Finalizado</span></td>
+                                    <td th:utext="${user.company?.name}"></td>
+                                </tr>
 
-                                    <td th:utext="${auction.id}" ></td>
-                                    <td th:utext="${auction.name}"></td>
-                                    <td th:utext="${#temporals.format(auction.start, 'dd/MM/yyyy HH:mm')}"></td>
-                                    <td th:utext="${#temporals.format(auction.finish, 'dd/MM/yyyy HH:mm')}"></td>
-                                    <td th:if="${auction.active == T(com.nintendo.buyback.model.enumerators.Status).ACTIVE}"><span class="label label-success" >Ativo</span></td>
-                                    <td th:if="${auction.active == T(com.nintendo.buyback.model.enumerators.Status).BLOCKED}"><span class="label label-warning" >Bloqueado</span></td>
-                                    <td th:if="${auction.active == T(com.nintendo.buyback.model.enumerators.Status).INACTIVE}"><span class="label label-error" >Finalizado</span></td>
-                                    <td th:if="!${auction.active == T(com.nintendo.buyback.model.enumerators.Status).BLOCKED}">
-                                        <div class="btn-group" th:if="${!#lists.contains(auction?.companies, userData?.company)}">
-                                            <form action="#" th:action="@{/user/home/engage}" method="get">
-                                                <input type="hidden" name="auctionId" id="auctionId" th:value="${auction.id}" />
-                                                <button type="submit" class="btn btn-block btn-primary btn-xs">Participar</button>
-                                            </form>
-                                        </div>
-                                        <span th:if="${#lists.contains(auction?.companies, userData?.company)}" class="label label-success" >Participando</span>
-                                    </td>
-                                    <td th:if="${auction.active == T(com.nintendo.buyback.model.enumerators.Status).BLOCKED}"></td>
-                                </tr>
                                 </tbody></table>
                         </div>
                         <!-- /.box-body -->
@@ -117,10 +109,5 @@
 <script th:src="@{/plugins/fastclick/fastclick.js}"></script>
 <!-- AdminLTE App -->
 <script th:src="@{/dist/js/app.min.js}"></script>
-<script>
-      function rowClicked(value) {
-        location.href = "/user/auction?auctionId=" + value;
-    }
-    </script>
 </body>
 </html>

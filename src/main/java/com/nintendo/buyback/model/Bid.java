@@ -18,7 +18,7 @@ public class Bid {
     private long id;
 
     @Column(name = "active")
-    @NotEmpty(message = "*Informar um status para o produto")
+    @Enumerated(EnumType.ORDINAL)
     private Status active;
 
     @Column(name = "value")

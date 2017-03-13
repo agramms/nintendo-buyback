@@ -1,7 +1,10 @@
 package com.nintendo.buyback.service;
 
+import com.nintendo.buyback.model.Auction;
 import com.nintendo.buyback.model.Company;
+import com.nintendo.buyback.model.enumerators.Status;
 import com.nintendo.buyback.repository.CompanyRepository;
+import com.nintendo.buyback.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +20,25 @@ public class CompanyServiceImpl implements CompanyService {
     public List<Company> findAllCompanies() {
         return companyRepository.findAll();
     }
+
+    @Override
+    public Company findByCompanyName(String name) {
+        return companyRepository.findByName(name);
+    }
+
+    @Override
+    public void saveCompany(Company company) {
+        if(company.getActive() == null || company.getActive().toString().isEmpty())
+            company.setActive(Status.ACTIVE);
+
+        companyRepository.save(company);
+    }
+
+    @Override
+    public List<Company> findByCompanyNameContaining(String name) {
+        if(!StringUtils.isNullOrEmpty(name))
+            return companyRepository.findByNameContaining(name);
+        return companyRepository.findAll();
+    }
+
 }

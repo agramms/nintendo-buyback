@@ -15,8 +15,12 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="role_id")
     private long id;
+
     @Column(name="role")
     private String role;
+
+    @Column(name = "name")
+    private String name;
 
     public long getId() {
         return id;
@@ -31,5 +35,17 @@ public class Role {
         this.role = role;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.name;
+    }
 }

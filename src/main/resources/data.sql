@@ -1,9 +1,9 @@
 INSERT INTO role
-Select * from (Select 1,'ADMIN') as tmp
+Select * from (Select 1 role_id,'ADMIN' role, 'Administrador' name) as tmp
 WHERE NOT EXISTS ( Select role from role where role = 'ADMIN' ) LIMIT 1;
 
 INSERT INTO role
-Select * from (Select 2,'USER') as tmp
+Select * from (Select 2 role_id,'USER' role, 'Usuário') as tmp
 WHERE NOT EXISTS ( Select role from role where role = 'USER' ) LIMIT 1;
 
 insert into user
