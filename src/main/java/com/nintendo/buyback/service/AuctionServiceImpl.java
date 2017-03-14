@@ -84,7 +84,7 @@ public class AuctionServiceImpl implements AuctionService {
         }
         if(StringUtils.isNullOrEmpty(auction.getName()))
         {
-            auction.setName("Leilão "+auction.getId());
+            auction.setName("Leilão Diário");
         }
         if(auction.getQtdMaxProducts() <= 0) {
             auction.setQtdMaxProducts(100);
