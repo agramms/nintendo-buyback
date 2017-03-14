@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * Created date: 11/03/2017 13:39
  * Project Name: nintendo-buyback
  */
-@ControllerAdvice(assignableTypes = {AuctionController.class, CompanyController.class, UserController.class})
+@ControllerAdvice(assignableTypes = {AuctionController.class, CompanyController.class, UserController.class, AdminUserController.class})
 public class LoadGlobalData {
 
     /**

@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
     public void saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         if(user.getActive() == null || user.getActive().equals(""))
-            user.setActive(Status.ACTIVE);
+            user.setActive(Status.BLOCKED);
         if(user.getRoles() == null || user.getRoles().isEmpty()) {
             Role userRole = roleRepository.findByRole(Roles.USER.toString());
             user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
@@ -50,29 +50,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteUser(User user) {
-        user.setActive(Status.INACTIVE);
-        userRepository.save(user);
-    }
-
-    @Override
-    public void blockUser(User user) {
-        user.setActive(Status.BLOCKED);
-        userRepository.save(user);
-    }
-
-    @Override
-    public void activateUser(User user) {
-        user.setActive(Status.ACTIVE);
-        userRepository.save(user);
-    }
-
-    @Override
     public List<User> findUserByName(String name) {
         if(!StringUtils.isNullOrEmpty(name))
             return userRepository.findByNameContaining(name);
 
         return userRepository.findAll();
+    }
+
+    @Override
+    public void changeStatus(long userId, Status newStatus) {
+        User user = userRepository.findOne(userId);
+        user.setActive(newStatus);
+        userRepository.save(user);
     }
 
 }

@@ -1,9 +1,9 @@
 INSERT INTO role
-Select * from (Select 1 role_id,'ADMIN' role, 'Administrador' name) as tmp
+Select * from (Select 1 role_id,'Administrador' name, 'ADMIN' role) as tmp
 WHERE NOT EXISTS ( Select role from role where role = 'ADMIN' ) LIMIT 1;
 
 INSERT INTO role
-Select * from (Select 2 role_id,'USER' role, 'Usuário') as tmp
+Select * from (Select 2 role_id,'Usuário' name, 'USER' role ) as tmp
 WHERE NOT EXISTS ( Select role from role where role = 'USER' ) LIMIT 1;
 
 insert into user
@@ -5056,5 +5056,4 @@ INSERT INTO product values (4996, 1, 'Around the World in 80 Days', 8, 2017, 6);
 INSERT INTO product values (4997, 1, 'Around the World in 80 Days', 7, 2016, 8);
 INSERT INTO product values (4998, 1, 'Around the World in 80 Days with Michael Palin', 1, 2017, 10);
 INSERT INTO product values (4999, 1, 'Arpaa Turup', 10, 2017, 8);
-INSERT INTO product values (5000, 1, 'Arquebus: Men of Iron Volume IV', 9, 2015, 7);
-*/
+INSERT INTO product values (5000, 1, 'Arquebus: Men of Iron Volume IV', 9, 2015, 7);*/

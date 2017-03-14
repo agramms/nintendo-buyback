@@ -34,10 +34,6 @@ public class UserController {
      */
     public static final String HOME_MAPPING = ROOT_MAPPING+"/home";
 
-    /**
-     * String para Mapping list
-     */
-    public static final String USER_LIST_MAPPING = ROOT_MAPPING+"/list";
 
     /**
      * String para Mapping especifico do leilão
@@ -64,18 +60,6 @@ public class UserController {
         modelAndView.addObject("auctions", auctions);
 
         modelAndView.setViewName(HOME_MAPPING);
-        return modelAndView;
-    }
-
-    @RequestMapping(value="list", method = {RequestMethod.GET, RequestMethod.POST})
-    public ModelAndView listUser(@RequestParam(value = "userFilter", required = false) String filter, HttpServletRequest request, HttpServletResponse response){
-        ModelAndView modelAndView = new ModelAndView();
-        List<User> users = userService.findUserByName(filter);
-
-        modelAndView.addObject("qtdUsers", (users != null ? users.size() : 0));
-        modelAndView.addObject("users", users);
-
-        modelAndView.setViewName(USER_LIST_MAPPING);
         return modelAndView;
     }
 

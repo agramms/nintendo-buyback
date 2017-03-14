@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Nintendo | BuyBack - Home</title>
+    <title>Nintendo | BuyBack - User</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
     <!-- Bootstrap 3.3.6 -->
@@ -33,7 +33,7 @@
     <div th:replace="fragments/menu :: main-header"></div>
     <div th:replace="fragments/menu :: ${isAdmin} ? main-sidebar-admin : main-sidebar-user"></div>
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" >
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
@@ -73,16 +73,38 @@
                                     <th>Função</th>
                                     <th>Status</th>
                                     <th>Empresa</th>
+                                    <th></th>
                                 </tr>
                                 <tr th:each="user : ${users}" >
                                     <td th:utext="${user.id}" ></td>
                                     <td th:utext="${user.name}"></td>
                                     <td th:utext="${user.email}"></td>
                                     <td th:utext="${#strings.listJoin(user.roles,', ')}"></td>
-                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).ACTIVE}"><span class="label label-success" >Ativo</span></td>
-                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).BLOCKED}"><span class="label label-warning" >Bloqueado</span></td>
-                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).INACTIVE}"><span class="label label-error" >Finalizado</span></td>
+                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).ACTIVE}"><span class="label label-success">Ativo</span></td>
+                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).BLOCKED}"><span class="label label-warning">Bloqueado</span></td>
+                                    <td th:if="${user.active == T(com.nintendo.buyback.model.enumerators.Status).INACTIVE}"><span class="label label-danger">Inativo</span></td>
                                     <td th:utext="${user.company?.name}"></td>
+                                    <td align="left">
+                                        <div class="btn-group">
+                                        <a title="Ativar" type="button" href="#"
+                                           th:href="@{/admin/user/action?userId=__${user.id}__&status=__${T(com.nintendo.buyback.model.enumerators.Status).ACTIVE}__}"
+                                           class="btn  btn-xs"
+                                           th:classappend="${user.active == T(com.nintendo.buyback.model.enumerators.Status).ACTIVE ? 'btn-default' : 'btn-success' }">
+                                                <i class="fa fa-check"></i>
+                                        </a>
+                                        <a title="Bloquear" type="button" href="#"
+                                           th:href="@{/admin/user/action?userId=__${user.id}__&status=__${T(com.nintendo.buyback.model.enumerators.Status).BLOCKED}__}"
+                                           class="btn btn-default btn-xs"
+                                           th:classappend="${user.active == T(com.nintendo.buyback.model.enumerators.Status).BLOCKED ? 'btn-default' : 'btn-warning'}">
+                                            <i class="fa fa-hand-stop-o"></i>
+                                        </a>
+                                        <a title="Inativar" type="button" href="#"
+                                           th:href="@{/admin/user/action?userId=__${user.id}__&status=__${T(com.nintendo.buyback.model.enumerators.Status).INACTIVE}__}"
+                                           class="btn btn-xs"
+                                           th:classappend="${user.active == T(com.nintendo.buyback.model.enumerators.Status).INACTIVE ? 'btn-default' : 'btn-danger'}"><i class="fa fa-close"></i>
+                                        </a>
+                                        </div>
+                                    </td>
                                 </tr>
 
                                 </tbody></table>

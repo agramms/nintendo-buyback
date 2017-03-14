@@ -64,7 +64,7 @@ public class CompanyController {
     }
 
     @RequestMapping(value = COMPANY_REGISTRATION_MAPPING, method = RequestMethod.POST)
-    public ModelAndView companyRegistration(@Valid Company company, BindingResult bindingResult)
+    public ModelAndView companyRegistration(@RequestParam(value = "companyFilter", required = false) String companyFilter, @Valid Company company, BindingResult bindingResult)
     {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -79,22 +79,30 @@ public class CompanyController {
         } else {
             companyService.saveCompany(company);
             modelAndView.addObject("successMessage", "Empresa cadastrada com sucesso");
-            modelAndView.addObject("company", new Company());
-            modelAndView.setViewName(UserController.HOME_MAPPING);
+
+            modelAndView = listCompany(modelAndView, companyFilter);
 
         }
         return modelAndView;
     }
 
     @RequestMapping(value = COMPANY_LIST_MAPPING, method = {RequestMethod.POST, RequestMethod.GET})
-    public ModelAndView listCompany(@RequestParam(value = "companyFilter", required = false) String companyFilter, HttpServletRequest request, HttpServletResponse response){
-        ModelAndView modelAndView = new ModelAndView();
+    public ModelAndView listCompanyView(@RequestParam(value = "companyFilter", required = false) String companyFilter, HttpServletRequest request, HttpServletResponse response){
+        ModelAndView modelAndView = listCompany(new ModelAndView(), companyFilter);
+
+        return modelAndView;
+    }
+
+
+    private ModelAndView listCompany(ModelAndView modelAndView, String companyFilter)
+    {
         List<Company> companies = companyService.findByCompanyNameContaining(companyFilter);
 
         modelAndView.addObject("qtdCompany", (companies != null ? companies.size() : 0));
         modelAndView.addObject("companies", companies);
-
         modelAndView.setViewName(COMPANY_LIST_VIEW_NAME);
+
+
         return modelAndView;
     }
 

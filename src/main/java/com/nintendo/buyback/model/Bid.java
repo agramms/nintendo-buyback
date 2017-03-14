@@ -26,6 +26,9 @@ public class Bid {
     @Min(value = 0, message = "*Todo lance deve ter um valor")
     private double value;
 
+    @Column(name="qtd_booked")
+    private int qtdBooked;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="company_id")
     private Company company;
@@ -88,5 +91,13 @@ public class Bid {
 
     public void setAuctionItens(Set<AuctionItem> auctionItens) {
         this.auctionItens = auctionItens;
+    }
+
+    public int getQtdBooked() {
+        return qtdBooked;
+    }
+
+    public void setQtdBooked(int qtdBooked) {
+        this.qtdBooked = qtdBooked;
     }
 }
