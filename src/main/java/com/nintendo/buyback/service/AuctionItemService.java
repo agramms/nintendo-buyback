@@ -4,6 +4,7 @@ import com.nintendo.buyback.model.Auction;
 import com.nintendo.buyback.model.AuctionItem;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by: Alessandro VIeira Grammelsbacher
@@ -11,6 +12,6 @@ import java.util.List;
  * Project Name: nintendo-buyback
  */
 public interface AuctionItemService {
-    List<AuctionItem> bookProducts(Auction auction);
+    Set<AuctionItem> bookProducts(Auction auction);
     void saveAuctionItens(List<AuctionItem> auctionItens);
 }

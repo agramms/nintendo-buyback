@@ -89,15 +89,9 @@ public class AuctionServiceImpl implements AuctionService {
         if(auction.getQtdMaxProducts() <= 0) {
             auction.setQtdMaxProducts(100);
         }
+        this.saveAuction(auction); /*Tenho que salvar para obter o id, porém se apresentar algum erro, como está anotado como @Transacional, faz o rollback de tudo*/
+        auction.setAuctionItens(auctionItemService.bookProducts(auction));
         this.saveAuction(auction);
-        auction.setAuctionItens(
-                new HashSet<>(
-                        auctionItemService.bookProducts(auction)
-                )
-        );
-        this.saveAuction(auction);
-
-
     }
 
     @Override

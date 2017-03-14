@@ -15,7 +15,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
                                                     "inner join product " +
                                                     "on category.category_id = product.category_id " +
                                                     "group by  category.category_id, category.name " +
-                                                    "order by  sum(quantity) desc ";
+                                                    "having sum(quantity) > 0 "+
+                                                    "order by  sum(quantity) desc " ;
     String GET_AUCTION_CATEGORIES="Select c.* " +
                                     "from auction a " +
                                     " inner join auction_item ai " +
