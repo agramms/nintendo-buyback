@@ -14,4 +14,5 @@ import java.util.Set;
 public interface AuctionItemService {
     Set<AuctionItem> bookProducts(Auction auction);
     void saveAuctionItens(List<AuctionItem> auctionItens);
+    Auction simulateBid(long auctionId, long companyId, double bidValue);
 }

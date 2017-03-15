@@ -10,4 +10,5 @@ public interface CompanyService {
     Company findByCompanyName(String name);
     void saveCompany(Company company);
     List<Company> findByCompanyNameContaining(String name);
+    Company findOneCompany(long company_id);
 }

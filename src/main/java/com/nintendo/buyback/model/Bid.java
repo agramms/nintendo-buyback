@@ -93,11 +93,5 @@ public class Bid {
         this.auctionItens = auctionItens;
     }
 
-    public int getQtdBooked() {
-        return qtdBooked;
-    }
 
-    public void setQtdBooked(int qtdBooked) {
-        this.qtdBooked = qtdBooked;
-    }
 }

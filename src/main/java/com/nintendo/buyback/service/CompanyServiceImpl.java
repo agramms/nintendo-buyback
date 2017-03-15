@@ -41,4 +41,9 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.findAll();
     }
 
+    @Override
+    public Company findOneCompany(long company_id) {
+        return companyRepository.findOne(company_id);
+    }
+
 }

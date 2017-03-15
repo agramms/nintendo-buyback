@@ -1,7 +1,10 @@
 package com.nintendo.buyback.service;
 
+import com.nintendo.buyback.model.Auction;
 import com.nintendo.buyback.model.Bid;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by: Alessandro VIeira Grammelsbacher
@@ -9,5 +12,5 @@ import org.springframework.stereotype.Service;
  * Project Name: nintendo-buyback
  */
 public interface BidService {
-    Bid simulateBid(Bid bid);
+    List<Bid> findBidsByAuction(Auction auction);
 }
