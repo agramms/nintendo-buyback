@@ -32,6 +32,9 @@ public class Company {
     @Column(name = "budget")
     private double budget;
 
+    @Column(name = "bided")
+    private double bided;
+
     @OneToMany(mappedBy = "company",fetch = FetchType.LAZY)
     private Set<User> users;
 
@@ -168,5 +171,21 @@ public class Company {
      */
     public void setAuctions(Set<Auction> auctions) {
         this.auctions = auctions;
+    }
+
+    /**
+     * Valor alocado em algum lance, para evitar não ter dinheiro em caixa
+     * @return double
+     */
+    public double getBided() {
+        return bided;
+    }
+
+    /**
+     * Informar o valor alocado para um lance
+     * @param bided
+     */
+    public void setBided(double bided) {
+        this.bided = bided;
     }
 }

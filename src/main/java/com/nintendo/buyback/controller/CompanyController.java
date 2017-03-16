@@ -77,7 +77,9 @@ public class CompanyController {
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName(COMPANY_REGISTRATION_VIEW_NAME);
         } else {
+            company.setBided(0);
             companyService.saveCompany(company);
+            modelAndView.addObject("returnAdd", true);
             modelAndView.addObject("successMessage", "Empresa cadastrada com sucesso");
 
             modelAndView = listCompany(modelAndView, companyFilter);

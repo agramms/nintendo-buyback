@@ -30,7 +30,7 @@ public class AuctionItemServiceImpl implements AuctionItemService {
 
     @Override
     public Set<AuctionItem> bookProducts(Auction auction) {
-        final HashMap<Long, AuctionItem> bookedProducts = new HashMap<>();
+        final List<AuctionItem> bookedProducts = new ArrayList<>();
         int wantToBook = auction.getQtdMaxProducts();   /*Quantidade de produtos que quero no meu leilão*/
         final int stoked = productService.getQtdProductsStoked(); /*Quantidade de itens no estoque*/
         /*Se o estoque estiver zerado, não temos nada a ser feito*/
@@ -57,21 +57,18 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 /*Se dentro da categoria já encontrei os que preciso, retorno para o principal para sai do loop*/
                 if(bookedProducts.size() < wantToBook)
                 {
-                    AuctionItem auctionItem = bookedProducts.get(product.getId()); /*Verifico se o produto esta na minha lista, para incrementar, ou se é novo*/
-                    if(auctionItem == null)
-                        auctionItem = new AuctionItem();
+                    AuctionItem auctionItem = new AuctionItem();
                     auctionItem.setAuction(auction);
                     product.setQuantity(product.getQuantity()-1);
                     auctionItem.setProduct(product);
-                    auctionItem.setQuantityStored(auctionItem.getQuantityStored() + 1);
-                    bookedProducts.put(product.getId(), auctionItem);
+                    bookedProducts.add(auctionItem);
                 }
                 else
                     break;
             }
         }while (bookedProducts.size() < wantToBook);
 
-        return new HashSet<>(bookedProducts.values());
+        return new HashSet<>(bookedProducts);
     }
 
     @Override

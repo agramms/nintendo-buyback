@@ -26,8 +26,8 @@ public class Bid {
     @Min(value = 0, message = "*Todo lance deve ter um valor")
     private double value;
 
-    @Column(name="qtd_booked")
-    private int qtdBooked;
+    @Column(name = "has_won", columnDefinition = "boolean default true", nullable = false)
+    private boolean hasWon;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="company_id")
@@ -37,7 +37,7 @@ public class Bid {
     @JoinColumn(name="auction_id")
     private Auction auction;
 
-    @OneToMany(mappedBy = "bid",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "bids",fetch = FetchType.LAZY)
     private Set<AuctionItem> auctionItens;
 
     /**
@@ -93,5 +93,11 @@ public class Bid {
         this.auctionItens = auctionItens;
     }
 
+    public boolean isHasWon() {
+        return hasWon;
+    }
 
+    public void setHasWon(boolean hasWon) {
+        this.hasWon = hasWon;
+    }
 }

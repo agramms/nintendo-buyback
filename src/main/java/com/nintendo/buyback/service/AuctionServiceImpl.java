@@ -9,15 +9,16 @@ import com.nintendo.buyback.repository.AuctionRepository;
 import com.nintendo.buyback.util.DateUtils;
 import com.nintendo.buyback.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service("auctionService")
 public class AuctionServiceImpl implements AuctionService {
@@ -131,70 +132,29 @@ public class AuctionServiceImpl implements AuctionService {
         auctionRepository.save(auction);
     }
 
-    /**
-     * Simula um lance que será realizado no leilão, faz mais sentido a lógica estar no leilão do que no lance em si
-     * O lance (bid) será criado um bid para cada Item no Leilão, com valores divergentes
-     * @param auction Leilão que será realizado o lance
-     * @return Lista de bid
-     */
     @Override
     @Transactional
-    public Auction simulateBid(long auctionId, long companyId, double bidValue) {
-        /*Primeiro, precisamos encontrar as informações necessárias para realizar a lógica*/
-        Auction auction = findOneAuction(auctionId);
-        Company bidder = companyService.findOneCompany(companyId);
+    public void auctionFinish(long auctionId) {
+        Auction auction = auctionRepository.findOne(auctionId);
+        auction.setActive(Status.INACTIVE);
 
-        /*Preciso verificar quais itens já foram bidados e quais posso bidar
-        * Nessa lista, vou colocar os itens que não poderão ser bidados nesse lance*/
-        HashMap<Long, AuctionItem> cantBidItens = new HashMap<>();
-        if(auction.getBids() != null && auction.getBids().size() > 0)
-        {
-            /* *
-                * Se o valor do BID atual, for menor, do que os bids que estou iterando,
-                * então não posso usar esses produtos.
-                *
-                * Posso passar mais de uma vez pelo mesmo produto, por isso coloco em um hash, assim não
-                * preciso verificar se o produto criado já está na lista de produtos
-                *
-                * */
-            for (Bid bid : auction.getBids()) {
-                if(bidValue < bid.getValue()) {
-                    for (AuctionItem auctionItem : bid.getAuctionItens()) {
-
-                        cantBidItens.put(auctionItem.getId(), auctionItem);
-                    }
-                }
-            }
-        }
-
-        int totalItems = (int) Math.round(bid.getCompany().getBudget() / bid.getValue());
-        final HashMap<Long, AuctionItem> bidAuctionItems = new HashMap<>();
-
-        while(totalItems > 0) {
-            for (AuctionItem auctionItem : bid.getAuction().getAuctionItens()) {
-                AuctionItem bidItem = bidAuctionItems.get(auctionItem.getId());
-                if(bidItem == null)
-                {
-                    bidItem = new AuctionItem();
-                    bidItem.setBid(bid);
-                }
-                auctionItem.setQuantityStored(auctionItem.getQuantityStored() - 1);
-                bidItem.setQuantityStored(bidItem.getQuantityStored()+1);
+        /*Verifico os ganhadores do Leilão*/
+        auction.getAuctionItens().stream()
+                .forEach(item -> item.getBids().stream()
+                            .max(Comparator.comparingDouble(Bid::getValue))
+                            .ifPresent(bid -> bid.setHasWon(true))
+                );
+        /*Desconto os valores dos ganhadores, somando o valor que estava reservado para o leilão*/
+        auction.getBids().stream()
+            .filter(bid -> bid.isHasWon())
+            .forEach(bid -> bid.getCompany().setBudget((bid.getCompany().getBided()+bid.getCompany().getBudget())-bid.getValue()))
+        ;
+        /*Zero os valores bidados dos participantes*/
+        auction.getCompanies().stream()
+                .forEach(company -> company.setBudget(company.getBided()));
 
 
-                if(bidItem.getProduct() == null)
-                    bidItem.setProduct(auctionItem.getProduct());
-                if(bidItem.getAuction() == null)
-                    bidItem.setAuction(bid.getAuction());
-
-
-                bidAuctionItems.put(auctionItem.getId(),bidItem);
-                if (--totalItems <= 0) break;
-            }
-        }
-        bid.setAuctionItens(new HashSet<>(bidAuctionItems.values()));
-
-        return bid;
+        saveAuction(auction);
     }
 
 

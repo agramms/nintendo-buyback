@@ -1,6 +1,7 @@
 package com.nintendo.buyback.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by avieira on 09/03/2017.
@@ -13,9 +14,6 @@ public class AuctionItem {
     @Column(name = "auction_item_id")
     private long id;
 
-    @Column(name = "qtdStored")
-    private int quantityStored;
-
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,  optional = false)
     @JoinColumn(name="auction_id", nullable = false)
     private Auction auction;
@@ -24,9 +22,9 @@ public class AuctionItem {
     @JoinColumn(name="product_id", nullable = false)
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="bid_id")
-    private Bid bid;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "auction_item_bid", joinColumns = @JoinColumn(name = "auction_item_id"), inverseJoinColumns = @JoinColumn(name = "bid_id"))
+    private Set<Bid> bids;
 
     /**
      * Getters and Setters
@@ -38,14 +36,6 @@ public class AuctionItem {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public int getQuantityStored() {
-        return quantityStored;
-    }
-
-    public void setQuantityStored(int quantityStored) {
-        this.quantityStored = quantityStored;
     }
 
     public Auction getAuction() {
@@ -64,11 +54,11 @@ public class AuctionItem {
         this.product = product;
     }
 
-    public Bid getBid() {
-        return bid;
+    public Set<Bid> getBids() {
+        return bids;
     }
 
-    public void setBid(Bid bid) {
-        this.bid = bid;
+    public void setBids(Set<Bid> bids) {
+        this.bids = bids;
     }
 }

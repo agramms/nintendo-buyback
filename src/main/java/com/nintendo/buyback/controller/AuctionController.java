@@ -50,7 +50,7 @@ public class AuctionController {
 
     public static final String AUCTION_BLOCK_MAPPING = "block";
     public static final String AUCTION_UNBLOCK_MAPPING = "unblock" ;
-
+    public static final String AUCTION_CLOSE_MAPPING = "close" ;
     @Autowired
     AuctionService auctionService;
 
@@ -127,6 +127,20 @@ public class AuctionController {
         ModelAndView modelAndView = new ModelAndView();
 
         auctionService.auctionActivate(auctionId);
+
+        List<Auction> auctions = auctionService.findAuctionsByNameAdmin("");
+        modelAndView.addObject("qtdAuction", (auctions != null ? auctions.size() : 0));
+        modelAndView.addObject("auctions", auctions);
+
+        modelAndView.setViewName(AUCTION_LIST_VIEW_NAME);
+        return modelAndView;
+    }
+
+    @RequestMapping(value=AUCTION_CLOSE_MAPPING, method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView closeAuction(@RequestParam(value = "closeAuctionId") long auctionId, HttpServletRequest request, HttpServletResponse response){
+        ModelAndView modelAndView = new ModelAndView();
+
+        auctionService.auctionFinish(auctionId);
 
         List<Auction> auctions = auctionService.findAuctionsByNameAdmin("");
         modelAndView.addObject("qtdAuction", (auctions != null ? auctions.size() : 0));

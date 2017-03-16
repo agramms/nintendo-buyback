@@ -98,7 +98,7 @@
                                     <th>Categoria</th>
                                 </tr>
                                 <tr th:each="auctionItem : ${bid.auctionItens}">
-                                    <td th:utext="${auctionItem.quantityStored}"></td>
+                                    <td >1</td>
                                     <td th:utext="${auctionItem.product.name}"></td>
                                     <td th:utext="${auctionItem.product.id}"></td>
                                     <td th:utext="${auctionItem.product.category?.name}"></td>

@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -91,7 +92,9 @@ public class UserController {
 
 
     @RequestMapping(value="bid/{auctionId}", method = {RequestMethod.GET})
-    public ModelAndView getBid(@PathVariable long auctionId, @ModelAttribute(LoadGlobalData.USER_DATA) User user, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView getBid(@PathVariable long auctionId
+            , @ModelAttribute(LoadGlobalData.USER_DATA) User user
+            , HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
         Auction auction = auctionService.findOneAuction(auctionId);
 
@@ -102,39 +105,61 @@ public class UserController {
         bid.setActive(Status.ACTIVE);
         modelAndView.addObject("bid", bid);
 
-
         modelAndView.setViewName(USER_BID_MAPPING);
         return modelAndView;
     }
 
 
     @RequestMapping(value="bid/{auctionId}", method = {RequestMethod.POST}, params = "action=confirm")
-    public ModelAndView registerBid(@PathVariable long auctionId,@ModelAttribute(LoadGlobalData.USER_DATA) User user, @Valid Bid bid, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView registerBid(@PathVariable long auctionId
+            ,@ModelAttribute(LoadGlobalData.USER_DATA) User user
+            , @Valid Bid bid, BindingResult bindingResult
+            , HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
+        try {
+            bidService.makeBid(auctionId, user.getCompany(), bid);
+            modelAndView.addObject("successMessage", "Seu lance foi registrado, assim que o leilão for encerrado você receberá uma notificação sobre os vencedores");
 
-        modelAndView.addObject("auctionHeader", bid.getAuction().toString());
-        modelAndView.addObject("bid", bid);
+            modelAndView.addObject("returnAdd", true);
 
+            modelAndView.setViewName(USER_AUCTION_MAPPING);
+        }
+        catch (Exception ex)
+        {
+            bindingResult.rejectValue("value", "value.error"
+                    , ex.getMessage());
+            modelAndView.addObject("errorMessage", ex.getMessage());
+            modelAndView.addObject("returnError", true);
+            modelAndView.setViewName(USER_BID_MAPPING);
 
+        }
+        finally {
+            Auction auction = auctionService.findOneAuction(auctionId);
+            modelAndView.addObject("auctionHeader", auction.toString());
+            modelAndView.addObject("auction", auction);
+            modelAndView.addObject("bid", bid);
+        }
 
-
-        modelAndView.setViewName(USER_BID_MAPPING);
         return modelAndView;
     }
 
     @RequestMapping(value="bid/{auctionId}", method = {RequestMethod.POST}, params = "action=verify")
-    public ModelAndView verifyBid(@PathVariable long auctionId,@ModelAttribute(LoadGlobalData.USER_DATA) User user, @Valid Bid bid, HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView verifyBid(@PathVariable long auctionId
+            ,@ModelAttribute(LoadGlobalData.USER_DATA) User user
+            , @Valid Bid bid, BindingResult bindingResult
+            , HttpServletRequest request, HttpServletResponse response) {
         ModelAndView modelAndView = new ModelAndView();
-        Auction auction = auctionService.findOneAuction(auctionId);
-        bid.setAuction(auction);
-        bid.setCompany(user.getCompany());
-        bid = bidService.simulateBid(bid);
+        try {
+            bid = bidService.simulateBid(auctionId, user.getCompany(), bid);
+        }
+        catch (Exception ex)
+        {
+            bindingResult.rejectValue("bid", "bid.error"
+                            , ex.getMessage());
+        }
 
         modelAndView.addObject("auctionHeader", bid.getAuction().toString());
         modelAndView.addObject("bid", bid);
-
-
-
 
         modelAndView.setViewName(USER_BID_MAPPING);
         return modelAndView;

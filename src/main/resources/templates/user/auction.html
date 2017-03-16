@@ -52,6 +52,11 @@
                 <h4>Pronto!</h4>
                 <span th:utext="${successMessage}"></span>
             </div>
+            <div class="alert alert-danger alert-dismissible" th:if="${returnError}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"></i> Erro!</h4>
+                <span th:utext="${errorMessage}"></span>
+            </div>
 
             <div class="row">
                 <div class="col-md-10"></div>
@@ -91,7 +96,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="auctionItem : ${auction.auctionItens}">
-                                    <td th:utext="${auctionItem.quantityStored}"></td>
+                                    <td th:utext="1"></td>
                                     <td th:utext="${auctionItem.product.name}"></td>
                                     <td th:utext="${auctionItem.product.id}"></td>
                                     <td th:utext="${auctionItem.product.category?.name}"></td>

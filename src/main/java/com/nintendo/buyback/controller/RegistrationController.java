@@ -72,6 +72,7 @@ public class RegistrationController {
         } else {
             userService.saveUser(user);
             modelAndView.addObject("successMessage", "Usuário registrado com sucesso");
+            modelAndView.addObject("returnAdd", true);
             modelAndView.addObject("user", new User());
             modelAndView.setViewName(LoginController.LOGIN_VIEW);
 

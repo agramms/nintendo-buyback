@@ -103,6 +103,12 @@
                                                 <button type="submit" class="btn btn-block btn-success btn-xs">Ativar</button>
                                             </form>
                                         </div>
+                                        <div class="btn-group" th:if="${auction.active == T(com.nintendo.buyback.model.enumerators.Status).ACTIVE}">
+                                            <form action="#" th:action="@{/admin/auction/close}" method="get">
+                                                <input type="hidden" name="closeAuctionId" id="closeAuctionId" th:value="${auction.id}" />
+                                                <button type="submit" class="btn btn-block btn-success btn-xs">Encerrar Leilão</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
 

@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Transactional
 public class AuctionTest {
-    @Autowired
+/*   @Autowired
     private AuctionService auctionService;
 
     @Autowired
@@ -44,5 +44,5 @@ public class AuctionTest {
 
 
     }
-
+*/
 }

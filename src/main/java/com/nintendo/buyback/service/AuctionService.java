@@ -1,10 +1,13 @@
 package com.nintendo.buyback.service;
 
 import com.nintendo.buyback.model.Auction;
+import com.nintendo.buyback.model.Bid;
 import com.nintendo.buyback.model.Company;
 import com.nintendo.buyback.model.User;
 import com.nintendo.buyback.model.enumerators.Status;
 
+import javax.transaction.Transactional;
+import java.io.NotActiveException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,4 +24,5 @@ public interface AuctionService {
     Auction findOneAuction(long auctionId);
     void auctionBlock(long auctionId);
     void auctionActivate(long auctionId);
+    void auctionFinish(long auctionId);
 }
