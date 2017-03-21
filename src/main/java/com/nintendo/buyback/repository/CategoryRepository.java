@@ -17,21 +17,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
                                                     "group by  category.category_id, category.name " +
                                                     "having sum(quantity) > 0 "+
                                                     "order by  sum(quantity) desc " ;
-    String GET_AUCTION_CATEGORIES="Select c.* " +
-                                    "from auction a " +
-                                    " inner join auction_item ai " +
-                                    "  on a.auction_id = ai.auction_id " +
-                                    " inner join product p " +
-                                    "  on p.product_id = ai.product_id " +
-                                    " inner join category c " +
-                                    "  on c.category_id = p.category_id" +
-                                    " Where auction.auction_id = :auction_id" +
-                                    " group by c.category_id, c.name";
+
 
     Category findByName(String name);
     @Query(value = GET_TOP_CATEGORIES, nativeQuery = true)
     List<Category> findTopCategoriesInStock();
 
-    @Query(value = GET_AUCTION_CATEGORIES, nativeQuery = true)
-    List<Category> findAuctionCategory(@Param("auction_id") long id);
 }

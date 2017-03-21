@@ -13,5 +13,5 @@ import java.util.Set;
  */
 public interface AuctionItemService {
     Set<AuctionItem> bookProducts(Auction auction);
-    void saveAuctionItens(List<AuctionItem> auctionItens);
+    void saveAuctionItems(List<AuctionItem> auctionItems);
 }

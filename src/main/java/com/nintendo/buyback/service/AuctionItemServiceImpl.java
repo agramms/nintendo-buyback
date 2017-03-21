@@ -32,7 +32,7 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     public Set<AuctionItem> bookProducts(Auction auction) {
         final List<AuctionItem> bookedProducts = new ArrayList<>();
         int wantToBook = auction.getQtdMaxProducts();   /*Quantidade de produtos que quero no meu leilão*/
-        final int stoked = productService.getQtdProductsStoked(); /*Quantidade de itens no estoque*/
+        final int stoked = productService.getQtdProductsStoked(); /*Quantidade de items no estoque*/
         /*Se o estoque estiver zerado, não temos nada a ser feito*/
         if(stoked <= 0)
             throw new NullPointerException("O estoque encontra-se zerado, nenhum item pode ser reservado");
@@ -41,7 +41,7 @@ public class AuctionItemServiceImpl implements AuctionItemService {
         if(wantToBook > stoked)
             wantToBook = stoked;
 
-        /*Verifico as categorias que tenho na base, certo que tenho a quantidade de itens que desejo*/
+        /*Verifico as categorias que tenho na base, certo que tenho a quantidade de items que desejo*/
         final List<Category> categories = categoryService.findTopCategoriesInStock(); /*Verifico as categorias que existem na base de dados*/
 
         /*Para cada categoria, verifico os produtos
@@ -72,7 +72,7 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     }
 
     @Override
-    public void saveAuctionItens(List<AuctionItem> auctionItens) {
-        auctionItemRepository.save(auctionItens);
+    public void saveAuctionItems(List<AuctionItem> auctionItems) {
+        auctionItemRepository.save(auctionItems);
     }
 }

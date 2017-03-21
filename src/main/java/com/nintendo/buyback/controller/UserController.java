@@ -154,14 +154,18 @@ public class UserController {
         }
         catch (Exception ex)
         {
-            bindingResult.rejectValue("bid", "bid.error"
-                            , ex.getMessage());
+            modelAndView.addObject("errorMessage", ex.getMessage());
+            modelAndView.addObject("returnError", true);
+        }
+        finally {
+            modelAndView.addObject("bid", bid);
+            modelAndView.addObject("auctionHeader", bid.getAuction().toString());
+            modelAndView.setViewName(USER_BID_MAPPING);
         }
 
-        modelAndView.addObject("auctionHeader", bid.getAuction().toString());
-        modelAndView.addObject("bid", bid);
 
-        modelAndView.setViewName(USER_BID_MAPPING);
+
+
         return modelAndView;
     }
 

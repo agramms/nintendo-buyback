@@ -1,14 +1,13 @@
 package com.nintendo.buyback.service;
 
-import com.nintendo.buyback.model.Auction;
-import com.nintendo.buyback.model.AuctionItem;
-import com.nintendo.buyback.model.Bid;
-import com.nintendo.buyback.model.Company;
+import com.nintendo.buyback.model.*;
 import com.nintendo.buyback.model.enumerators.Status;
 import com.nintendo.buyback.repository.AuctionRepository;
 import com.nintendo.buyback.util.DateUtils;
 import com.nintendo.buyback.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +15,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service("auctionService")
@@ -62,6 +59,10 @@ public class AuctionServiceImpl implements AuctionService {
     public List<Auction> findAuctionsByName(String name) {
         if(!StringUtils.isNullOrEmpty(name))
             return auctionRepository.findByNameContaining(name);
+
+        /*TODO: verificar*/
+        List<Status>statuses = new ArrayList<>();
+
         return auctionRepository.findByActive(Status.ACTIVE);
     }
 
@@ -101,7 +102,7 @@ public class AuctionServiceImpl implements AuctionService {
             auction.setQtdMaxProducts(100);
         }
         this.saveAuction(auction); /*Tenho que salvar para obter o id, porém se apresentar algum erro, como está anotado como @Transacional, faz o rollback de tudo*/
-        auction.setAuctionItens(auctionItemService.bookProducts(auction));
+        auction.setAuctionItems(auctionItemService.bookProducts(auction));
         this.saveAuction(auction);
     }
 
@@ -138,20 +139,23 @@ public class AuctionServiceImpl implements AuctionService {
         Auction auction = auctionRepository.findOne(auctionId);
         auction.setActive(Status.INACTIVE);
 
-        /*Verifico os ganhadores do Leilão*/
-        auction.getAuctionItens().stream()
-                .forEach(item -> item.getBids().stream()
-                            .max(Comparator.comparingDouble(Bid::getValue))
-                            .ifPresent(bid -> bid.setHasWon(true))
-                );
+
+        auction.getAuctionItems().stream()
+                .forEach(item -> item.getBidItems().stream()
+                                .max(Comparator.comparingDouble(bidItem -> bidItem.getBid().getValue()))
+                                .ifPresent((BidItem bidItem) -> {
+                                    bidItem.getBid().setWinner(true);
+                                    bidItem.setWinner(true);
+                                })
+                        );
         /*Desconto os valores dos ganhadores, somando o valor que estava reservado para o leilão*/
         auction.getBids().stream()
-            .filter(bid -> bid.isHasWon())
+            .filter(bid -> bid.isWinner())
             .forEach(bid -> bid.getCompany().setBudget((bid.getCompany().getBided()+bid.getCompany().getBudget())-bid.getValue()))
         ;
         /*Zero os valores bidados dos participantes*/
         auction.getCompanies().stream()
-                .forEach(company -> company.setBudget(company.getBided()));
+                .forEach(company -> company.setBided(0));
 
 
         saveAuction(auction);

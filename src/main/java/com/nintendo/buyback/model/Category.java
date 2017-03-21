@@ -3,6 +3,7 @@ package com.nintendo.buyback.model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -45,5 +46,9 @@ public class Category {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public Category() {
+        this.products = new HashSet<>();
     }
 }

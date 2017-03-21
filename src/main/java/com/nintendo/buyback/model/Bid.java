@@ -1,10 +1,10 @@
 package com.nintendo.buyback.model;
 
 import com.nintendo.buyback.model.enumerators.Status;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -26,8 +26,8 @@ public class Bid {
     @Min(value = 0, message = "*Todo lance deve ter um valor")
     private double value;
 
-    @Column(name = "has_won", columnDefinition = "boolean default true", nullable = false)
-    private boolean hasWon;
+    @Column(name = "is_winner", columnDefinition = "boolean default true", nullable = false)
+    private boolean isWinner;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="company_id")
@@ -37,8 +37,21 @@ public class Bid {
     @JoinColumn(name="auction_id")
     private Auction auction;
 
-    @ManyToMany(mappedBy = "bids",fetch = FetchType.LAZY)
-    private Set<AuctionItem> auctionItens;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bid")
+    private Set<BidItem> bidItems;
+
+    /**
+     * Constructor
+     */
+    public Bid(Company company, Auction auction, Set<BidItem> bidItems) {
+        this.company = company;
+        this.auction = auction;
+        this.bidItems = bidItems;
+    }
+
+    public Bid() {
+        this.bidItems = new HashSet<>();
+    }
 
     /**
      * Getters e Setters
@@ -85,19 +98,19 @@ public class Bid {
         this.auction = auction;
     }
 
-    public Set<AuctionItem> getAuctionItens() {
-        return auctionItens;
+    public Set<BidItem> getBidItems() {
+        return bidItems;
     }
 
-    public void setAuctionItens(Set<AuctionItem> auctionItens) {
-        this.auctionItens = auctionItens;
+    public void setBidItems(Set<BidItem> bidItems) {
+        this.bidItems = bidItems;
     }
 
-    public boolean isHasWon() {
-        return hasWon;
+    public boolean isWinner() {
+        return isWinner;
     }
 
-    public void setHasWon(boolean hasWon) {
-        this.hasWon = hasWon;
+    public void setWinner(boolean winner) {
+        this.isWinner = winner;
     }
 }

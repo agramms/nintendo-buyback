@@ -4,6 +4,7 @@ import com.nintendo.buyback.model.enumerators.Status;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -187,5 +188,15 @@ public class Company {
      */
     public void setBided(double bided) {
         this.bided = bided;
+    }
+
+    /**
+     * Constructor
+     */
+    public Company() {
+        this.bids = new HashSet<>();
+        this.auctions = new HashSet<>();
+        this.users = new HashSet<>();
+
     }
 }

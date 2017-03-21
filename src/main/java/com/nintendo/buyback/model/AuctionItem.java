@@ -1,6 +1,8 @@
 package com.nintendo.buyback.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -22,9 +24,8 @@ public class AuctionItem {
     @JoinColumn(name="product_id", nullable = false)
     private Product product;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "auction_item_bid", joinColumns = @JoinColumn(name = "auction_item_id"), inverseJoinColumns = @JoinColumn(name = "bid_id"))
-    private Set<Bid> bids;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "auctionItem")
+    private Set<BidItem> bidItems;
 
     /**
      * Getters and Setters
@@ -54,11 +55,16 @@ public class AuctionItem {
         this.product = product;
     }
 
-    public Set<Bid> getBids() {
-        return bids;
+    public Set<BidItem> getBidItems() {
+        return bidItems;
     }
 
-    public void setBids(Set<Bid> bids) {
-        this.bids = bids;
+    public void setBidItems(Set<BidItem> bidItems) {
+        this.bidItems = bidItems;
+    }
+
+
+    public AuctionItem() {
+        this.bidItems = new HashSet<>();
     }
 }

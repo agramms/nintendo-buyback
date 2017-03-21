@@ -39,7 +39,7 @@ public class AuctionTest {
         for (Auction persistedAuction : auctions) {
             assertThat(auction.getName()).isEqualTo(persistedAuction.getName());
             assertThat(auction.getQtdMaxProducts()).isEqualTo(100);
-            assertThat(auction.getAuctionItens().size()).isEqualTo(100);
+            assertThat(auction.getAuctionItems().size()).isEqualTo(100);
         }
 
 

@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -39,7 +40,7 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product",fetch = FetchType.LAZY)
-    private Set<AuctionItem> auctionItens;
+    private Set<AuctionItem> auctionItems;
 
     /**
      * Getters and Setters
@@ -97,11 +98,15 @@ public class Product {
         this.category = category;
     }
 
-    public Set<AuctionItem> getAuctionItens() {
-        return auctionItens;
+    public Set<AuctionItem> getAuctionItems() {
+        return auctionItems;
     }
 
-    public void setAuctionItens(Set<AuctionItem> auctionItens) {
-        this.auctionItens = auctionItens;
+    public void setAuctionItems(Set<AuctionItem> auctionItems) {
+        this.auctionItems = auctionItems;
+    }
+
+    public Product() {
+        this.auctionItems = new HashSet<>();
     }
 }

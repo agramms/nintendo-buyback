@@ -22,4 +22,6 @@ public interface BidService {
 
     @Transactional
     Bid simulateBid(long auctionId, Company bidder, Bid bid) throws Exception;
+
+    void saveBid(Bid bid);
 }

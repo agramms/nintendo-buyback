@@ -75,7 +75,7 @@
                                 <strong th:text="${auction.name}">#</strong><br/>
                                 <text th:text="${auction.companies?.size()} + ' empresas participando'"></text><br/>
                                 <text th:text="${auction.bids?.size()} + ' lances efetuados'"></text><br/>
-                                <text th:text="${auction.auctionItens?.size()} + ' produtos participantes'"></text><br/>
+                                <text th:text="${auction.auctionItems?.size()} + ' produtos participantes'"></text><br/>
                             </address>
                         </div>
                         <!-- /.col -->
@@ -85,7 +85,7 @@
                     <!-- Table row -->
                     <div class="row">
                         <div class="col-xs-12 table-responsive">
-                            <table class="table table-striped text-center" th:field="*{auction.auctionItens}">
+                            <table class="table table-striped text-center" th:field="*{auction.auctionItems}">
                                 <thead>
                                 <tr>
                                     <th>Quantidade</th>
@@ -95,7 +95,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="auctionItem : ${auction.auctionItens}">
+                                <tr th:each="auctionItem : ${auction.auctionItems}">
                                     <td th:utext="1"></td>
                                     <td th:utext="${auctionItem.product.name}"></td>
                                     <td th:utext="${auctionItem.product.id}"></td>

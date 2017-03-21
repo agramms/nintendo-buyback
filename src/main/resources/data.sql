@@ -390,12 +390,12 @@ Select 328, 1, '1817', 0, 2016, 10 from dual union
 Select 329, 1, '1822: The Railways of Great Britain', 2, 2016, 7 from dual union
 Select 330, 1, '1824', 6, 2015, 3 from dual union
 Select 331, 1, '1825 Development Kit D1: Additional Tiles', 5, 2016, 2 from dual union
-Select 332, 1, '1825 Extension Kit K1: Supplementary Tiles', 2, 2016, 6 from dual union
-Select 333, 1, '1825 Extension Kit K2: Advanced Trains', 3, 2015, 8 from dual union
-Select 334, 1, '1825 Extension Kit K3: Phase Four', 9, 2015, 7 from dual union
-Select 335, 1, '1825 Extension Kit K5: Minor Companies for Unit 2', 5, 2017, 9 from dual union
-Select 336, 1, '1825 Extension Kit K6: Advanced Tiles', 7, 2016, 3 from dual union
-Select 337, 1, '1825 Extension Kit K7: London, Tilbury and Southend Railway', 5, 2017, 6 from dual union
+Select 332, 1, '1825 Extemsion Kit K1: Supplementary Tiles', 2, 2016, 6 from dual union
+Select 333, 1, '1825 Extemsion Kit K2: Advanced Trains', 3, 2015, 8 from dual union
+Select 334, 1, '1825 Extemsion Kit K3: Phase Four', 9, 2015, 7 from dual union
+Select 335, 1, '1825 Extemsion Kit K5: Minor Companies for Unit 2', 5, 2017, 9 from dual union
+Select 336, 1, '1825 Extemsion Kit K6: Advanced Tiles', 7, 2016, 3 from dual union
+Select 337, 1, '1825 Extemsion Kit K7: London, Tilbury and Southend Railway', 5, 2017, 6 from dual union
 Select 338, 1, '1825 Regional Kit R1: Wales', 6, 2015, 6 from dual union
 Select 339, 1, '1825 Regional Kit R2: South West England', 10, 2017, 7 from dual union
 Select 340, 1, '1825 Regional Kit R3: North Norfolk', 8, 2016, 4 from dual union
@@ -562,7 +562,7 @@ Select 500, 1, '18OH', 5, 2015, 5 from dual union
 Select 501, 1, '18PA', 5, 2017, 1 from dual union
 Select 502, 1, '18Rhl: Rhineland', 4, 2015, 3 from dual union
 Select 503, 1, '18Ruhr', 0, 2015, 10 from dual union
-Select 504, 1, '18Ruhr: Extension 01', 0, 2015, 8 from dual union
+Select 504, 1, '18Ruhr: Extemsion 01', 0, 2015, 8 from dual union
 Select 505, 1, '18SA', 2, 2015, 4 from dual union
 Select 506, 1, '18Scan', 9, 2015, 3 from dual union
 Select 507, 1, '18SP', 6, 2017, 3 from dual union
@@ -4208,7 +4208,7 @@ Select 4126, 1, 'Anno 1452', 1, 2015, 6 from dual union
 Select 4127, 1, 'Anno 1503', 7, 2015, 7 from dual union
 Select 4128, 1, 'Anno 1503: Aristokraten und Piraten', 3, 2017, 7 from dual union
 Select 4129, 1, 'Anno 1701: Das Brettspiel', 4, 2016, 4 from dual union
-Select 4130, 1, 'Anno 1701: Das Kartenspiel', 6, 2017, 4 from dual union
+Select 4130, 1, 'Anno 1701: Das Kartemspiel', 6, 2017, 4 from dual union
 Select 4131, 1, 'Anno 2000', 1, 2016, 2 from dual union
 Select 4132, 1, 'Anno 3000', 2, 2017, 9 from dual union
 Select 4133, 1, 'Anno Bosparans Fall', 1, 2015, 1 from dual union
@@ -4613,7 +4613,7 @@ Select 4531, 1, 'Arcadia Quest: Pets – Cerby', 7, 2017, 3 from dual union
 Select 4532, 1, 'Arcadia Quest: Pigsy', 0, 2016, 8 from dual union
 Select 4533, 1, 'Arcadia Quest: Steady Slingshot Promo Pack', 5, 2016, 1 from dual union
 Select 4534, 1, 'Arcadia Quest: The Nameless Campaign', 0, 2015, 4 from dual union
-Select 4535, 1, 'Arcadia Quest: Tiaret & Mittens', 5, 2015, 2 from dual union
+Select 4535, 1, 'Arcadia Quest: Tiaret & Mittems', 5, 2015, 2 from dual union
 Select 4536, 1, 'Arcadia Quest: Tomrick', 1, 2015, 1 from dual union
 Select 4537, 1, 'Arcadia Quest: Viola & Crash', 6, 2017, 2 from dual union
 Select 4538, 1, 'Arcadia Quest: Yona & Kuruk', 4, 2017, 6 from dual union

@@ -39,8 +39,8 @@ public class ProductServiceImpl implements ProductService {
         List<Product> bestChoice = new ArrayList<Product>();
         List<Category> categories = categoryService.findTopCategoriesInStock();
 
-        /*Primerio buscando na categoria, para verificar se consigo formar a quantidade de intens necessária para o Leilão
-        * Caso não complete os itens, vou para a proxima categoria, até a última tentando coletar a quantidade de produtos (diferentes)
+        /*Primerio buscando na categoria, para verificar se consigo formar a quantidade de intems necessária para o Leilão
+        * Caso não complete os items, vou para a proxima categoria, até a última tentando coletar a quantidade de produtos (diferentes)
         *
         * Se pegar maior do que a quantidade de produtos, tudo bem, estou enviando as melhores escolhas apenas, quando for adicionar o leilão deve ser feita essa verificação*/
         for (Category category : categories) {

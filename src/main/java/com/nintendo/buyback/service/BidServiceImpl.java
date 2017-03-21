@@ -1,9 +1,6 @@
 package com.nintendo.buyback.service;
 
-import com.nintendo.buyback.model.Auction;
-import com.nintendo.buyback.model.AuctionItem;
-import com.nintendo.buyback.model.Bid;
-import com.nintendo.buyback.model.Company;
+import com.nintendo.buyback.model.*;
 import com.nintendo.buyback.model.enumerators.Status;
 import com.nintendo.buyback.repository.BidRepository;
 import com.nintendo.buyback.repository.CompanyRepository;
@@ -58,10 +55,12 @@ public class BidServiceImpl implements BidService {
 
         auction.getBids().add(getBestBidOption(auction, bidder, bid));
          /*Seto valor que a empresa gastou para temporario*/
-        bidder.setBided(bid.getAuctionItens().size()*bid.getValue());
+        bidder.setBided(bid.getBidItems().size()*bid.getValue());
         bidder.setBudget(bidder.getBudget()-bidder.getBided());
 
 
+        //bid.getBidItems().stream().forEach();
+        this.saveBid(bid);
         auctionService.saveAuction(auction);
     }
 
@@ -80,15 +79,20 @@ public class BidServiceImpl implements BidService {
         return getBestBidOption(auction, bidder, bid);
     }
 
+    @Override
+    public void saveBid(Bid bid) {
+        bidRepository.save(bid);
+    }
+
     private Bid getBestBidOption(Auction auction, Company bidder, Bid bid) throws Exception
     {
         /*Primeiro, precisamos encontrar as informações necessárias para realizar a lógica*/
         /*Valor que tenho que ter no leilão para que não tenha prejuizo*/
-        final double auctionValue =  (auction.getAuctionItens().size() * 15);
+        final double auctionValue =  (auction.getAuctionItems().size() * 15);
         final double minProfit = (auctionValue*0.2)+auctionValue;
         double minProfitItem = 18;
         /* Preciso validar o menor valor para o primeiro lance*/
-        final int qtdItens = (int) Math.floor(bidder.getBudget() / bid.getValue());
+        final int qtdItems = (int) Math.floor(bidder.getBudget() / bid.getValue());
 
         /*Verifico se o leilão está ativo*/
         if(!auction.getActive().equals(Status.ACTIVE))
@@ -100,43 +104,41 @@ public class BidServiceImpl implements BidService {
         if(bid.getValue() < minProfitItem)
             throw new Exception("Valor do lance deve ser maior que R$"+minProfit);
 
-        /*Agora, preciso ordenar a lista de itens do leilão, para saber qual a maior
+        /*Agora, preciso ordenar a lista de items do leilão, para saber qual a maior
         * chance de ganho do leilão naquele valor
         * Esse valor é um simulação, então consulto a base e ordeno os bids por valor*/
-        List<AuctionItem> bestOptions = auction.getAuctionItens().stream()
+        List<AuctionItem> bestOptions = auction.getAuctionItems().stream()
                                                 .sorted(Comparator
-                                                        .comparingDouble(item -> item.getBids().stream()
-                                                                .mapToDouble(Bid::getValue)
+                                                        .comparingDouble(item -> item.getBidItems().stream()
+                                                                .mapToDouble(bidItem -> bidItem.getBid().getValue())
                                                                 .min()
                                                                 .orElse(0)
                                                         )
                                                 )
                                                 .filter((AuctionItem item) -> {
-                                                            return item.getBids().stream()
-                                                                    .mapToDouble(Bid::getValue)
-                                                                    .min()
+                                                            return item.getBidItems().stream()
+                                                                    .mapToDouble(bidItem -> bidItem.getBid().getValue())
+                                                                    .max()
                                                                     .orElse(0)
                                                                     < bid.getValue();
                                                         }
                                                 )
-                                                .limit(qtdItens)
+                                                .limit(qtdItems)
                                                 .collect(Collectors.toList());
 
-        /*Bom, bestObtions agora tem a lista de AuctionItens ordenados por valor
+        /*Bom, bestObtions agora tem a lista de AuctionItems ordenados por valor
         * Então, posso ter mais de uma vez um produto que foi bidado, mas a idéia é pegar os de menor valor
         * e tentar bidar*/
         bid.setActive(Status.ACTIVE);
         bid.setAuction(auction);
         bid.setCompany(bidder);
         bestOptions.stream()
-                .forEach(auctionItem -> auctionItem.getBids().add(bid));
-        bid.setAuctionItens(bestOptions.stream().collect(Collectors.toSet()));
-
-        /*Agora vou criar a lista de itens do bid*/
-        /*Primeiro verificar se tem algum sem lance, mais fácil de filtrar
-        bid.setAuctionItens(bestOptions.stream()
-                .filter(item -> item.getBids().size() <= 0)
-                .collect(Collectors.toSet()));*/
+                .forEach(auctionItem -> {
+                    BidItem bidItem = new BidItem(bid, auctionItem);
+                    auctionItem.getBidItems().add(bidItem);
+                    bid.getBidItems().add(bidItem);
+                }
+                );
 
 
         return bid;

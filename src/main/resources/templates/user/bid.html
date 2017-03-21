@@ -48,7 +48,11 @@
 
         <!-- Main content -->
         <section class="content">
-
+            <div class="alert alert-danger alert-dismissible" th:if="${returnError}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"></i> Erro!</h4>
+                <span th:utext="${errorMessage}"></span>
+            </div>
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
@@ -58,7 +62,7 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
-                        <form role="form" action="#" autocomplete="off" th:action="@{/user/bid/__${bid.auction.id}__}"
+                        <form role="form" action="#" autocomplete="off" th:action="@{/user/bid/__${bid?.auction?.id}__}"
                                method="post" th:object="${bid}">
 
                             <div class="box-body">
@@ -90,18 +94,18 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
-                            <table class="table table-hover" th:field="*{bid.auctionItens}">
+                            <table class="table table-hover" th:field="*{bid.bidItems}">
                                 <tbody><tr>
                                     <th>Quantidade</th>
                                     <th>Produto</th>
                                     <th>Serial #</th>
                                     <th>Categoria</th>
                                 </tr>
-                                <tr th:each="auctionItem : ${bid.auctionItens}">
+                                <tr th:each="bidItem : ${bid?.bidItems}">
                                     <td >1</td>
-                                    <td th:utext="${auctionItem.product.name}"></td>
-                                    <td th:utext="${auctionItem.product.id}"></td>
-                                    <td th:utext="${auctionItem.product.category?.name}"></td>
+                                    <td th:utext="${bidItem?.auctionItem?.product?.name}"></td>
+                                    <td th:utext="${bidItem?.auctionItem?.product?.id}"></td>
+                                    <td th:utext="${bidItem?.auctionItem?.product?.category?.name}"></td>
                                 </tr>
 
                                 </tbody></table>
